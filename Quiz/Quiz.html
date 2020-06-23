@@ -1,0 +1,239 @@
+﻿<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Quiz</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<style>
+	body {
+  background-image: url('brain_backround.jpg');
+  background-repeat: repeat;
+  background-attachment: fixed; 
+  background-size: 100% 110%;
+}
+.label {
+  color: black;
+  padding: 8px;
+}
+
+.success {background-color: #4CAF50;} /* Green */
+.info {background-color: #2196F3;} /* Blue */
+.warning {background-color: #ff9800;} /* Orange */
+.danger {background-color: #f44336;} /* Red */
+.other {background-color: #e7e7e7; color: black;} /* Gray */
+
+	.myButton {
+	box-shadow: 0px 1px 0px 0px #f0f7fa;
+	background:linear-gradient(to bottom, #33bdef 5%, #019ad2 100%);
+	background-color:#33bdef;
+	border-radius:6px;
+	border:1px solid #057fd0;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:21px;
+	font-weight:bold;
+	padding:14px 48px;
+	text-decoration:none;
+	text-shadow:0px -1px 0px #5b6178;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #019ad2 5%, #33bdef 100%);
+	background-color:#019ad2;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
+
+</style>
+<body style="background-color:powderblue;">
+	<div align="center"style="margin-top:200px" >
+	
+    <label class="label other" style="font-size:35px" id="question">The Question.</label>
+    <div id="div1">
+    <p></p>
+    <label class="label other" style=" font-size:25px"><input type="radio" name="option" id="radio1" /> <span id="opt1"></span></label>
+    <p></p>
+    <label class="label other" style="font-size:25px"><input type="radio" name="option" id="radio2" /> <span id="opt2"></span></label>
+    <div id="div2">
+    <p></p>
+    <label  class="label other" style="font-size:25px"><input type="radio" name="option" id="radio3" /> <span id="opt3"></span></label>
+    <p></p>
+    <label  class="label other" style="font-size:25px"><input type="radio" name="option" id="radio4" /> <span id="opt4"></span></label>
+    <p></p>
+</div>
+</div>
+    <p  visibility='hidden' id="correctAns"></p>
+    <!-- <center> <Button id="nextBtn">Next Question</Button> </center> -->
+    <a href="#" id="nextBtn" class="myButton">Start</a>
+	<br/>
+	<br/>
+
+    <label class="label other" id="difficulty"></label>
+</div>	
+    <script>
+        var counter = 0;
+        var Qcnt = 0;
+        var urls;
+        var rand;
+        var correctNum;
+        var isMultiple;
+        var div1 = document.getElementById("div1");
+        var option1 = document.getElementById("opt1");
+        var option2 = document.getElementById("opt2");
+        var option3 = document.getElementById("opt3");
+        var option4 = document.getElementById("opt4");
+        var radio1 = document.getElementById("radio1");
+        var radio2 = document.getElementById("radio2");
+        var radio3 = document.getElementById("radio3");
+        var radio4 = document.getElementById("radio4");
+        var title = document.getElementById("question");
+        var btn = document.getElementById("nextBtn");
+        var theDificulty = document.getElementById("difficulty");
+
+        function startLook() {
+            document.getElementById("div2").style.visibility = "hidden";
+            title.textContent = 'Choose Game type';
+            nextBtn.textContent = 'START!';
+            option1.textContent = 'True/False';
+            option2.textContent = 'Multiple Questions';
+
+        }
+
+        function finish() {
+        	div1.style.visibility = "hidden";
+        	document.getElementById("div2").style.visibility = "hidden";
+
+            nextBtn.textContent = 'Menu';
+            theDificulty.style.visibility = "hidden";
+            title.textContent = 'Your final score is ' + counter + '!';
+
+            exit();
+        }
+
+
+
+        $(document).ready(
+            function () {
+
+                function getquestion() {
+                    $.ajax({
+                        url: urls,
+                        type: "GET",
+                        success: function (data) {
+                            rand = Math.floor(Math.random() * 10);
+                            var a1 = (rand % 4) + 1;
+                            var a2 = ((rand + 1) % 4) + 1;
+                            var a3 = ((rand + 2) % 4) + 1;
+                            var a4 = correctNum = ((rand + 3) % 4) + 1;
+                            $("#question").html(data.results[0].question);
+                            if (isMultiple) {
+                                $('#opt' + a1.toString()).html(data.results[0].incorrect_answers[0]);
+                                $('#opt' + a2.toString()).html(data.results[0].incorrect_answers[1]);
+                                $('#opt' + a3.toString()).html(data.results[0].incorrect_answers[2]);
+                                $('#opt' + a4.toString()).html(data.results[0].correct_answer);
+                                $('#correctAns').html(data.results[0].correct_answer);
+                            } else {
+                                a1 = (rand % 2) + 1;
+                                a2 = ((rand + 1) % 2) + 1;
+                                $('#opt' + a1.toString()).html(data.results[0].incorrect_answers[0]);
+                                $('#opt' + a2.toString()).html(data.results[0].correct_answer);
+                            }
+                            $('#correctAns').html(data.results[0].correct_answer);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+
+                }
+                startLook();
+
+                var button = document.getElementById("nextBtn");
+                button.onclick = function () {
+                	if(div1.style.visibility == "hidden"){
+                		location.reload();
+                	}
+
+                    var correctAnswer = document.getElementById("correctAns");
+                    correctAnswer.style.visibility = "hidden";
+                    if (Qcnt == 0) {
+                        if (radio1.checked) {
+                            urls = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=boolean";
+
+                            var btn = document.getElementById("nextBtn");
+                            btn.textContent = 'Next Question';
+                            isMultiple = false;
+                            theDificulty.textContent = 'Deficulty - Easy';
+
+                        } else if (document.getElementById("radio2").checked) {
+                            urls = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple";
+                            var btn = document.getElementById("nextBtn");
+							document.getElementById("div2").style.visibility = "visible";
+                            btn.textContent = 'Next Question';
+                            theDificulty.textContent = 'Deficulty - Easy';
+                            isMultiple = true;
+
+
+                        } else {
+                            alert("Game type was not been chosen. Try again.");
+                            location.reload();
+                        }
+
+                    }
+                    if (isMultiple) {
+                        if (Qcnt == 5) {
+                            urls = "https://opentdb.com/api.php?amount=1&difficulty=medium&type=multiple";
+                            theDificulty.textContent = 'Deficulty - Medium';
+                        } if (Qcnt == 10) {
+                            urls = "https://opentdb.com/api.php?amount=1&difficulty=hard&type=multiple";
+                            theDificulty.textContent = 'Deficulty - Hard';
+                        } if (Qcnt == 15) {
+                            finish();
+                        }
+
+                        if (option1.textContent.toString() == correctAnswer.textContent.toString() && radio1.checked) {
+                            counter++;
+                        } else if (option2.textContent.toString() == correctAnswer.textContent.toString() && radio2.checked) {
+                            counter++;
+                        } else if (option3.textContent.toString() == correctAnswer.textContent.toString() && radio3.checked) {
+                            counter++;
+                        } else if (option4.textContent.toString() == correctAnswer.textContent.toString() && radio4.checked) {
+                            counter++;
+                        }
+
+                        getquestion();
+                    }
+                    else { //True/False Questions
+                        if (Qcnt == 5) {
+                            urls = "https://opentdb.com/api.php?amount=1&difficulty=medium&type=boolean";
+                            theDificulty.textContent = 'Deficulty - Medium';
+                        } if (Qcnt == 10) {
+                            urls = "https://opentdb.com/api.php?amount=1&difficulty=hard&type=boolean";
+                            theDificulty.textContent = 'Deficulty - Hard';
+                        }
+                        if (Qcnt == 15) {
+                            finish();
+                        }
+                        if (option1.textContent.toString() == correctAnswer.textContent.toString() && radio1.checked) {
+                            counter++;
+                        } else if (option2.textContent.toString() == correctAnswer.textContent.toString() && radio2.checked) {
+                            counter++;
+                        }
+                        getquestion();
+
+                    }
+                    Qcnt++;
+
+                };
+                $("#content").click(getquestion);
+            });
+    </script>
+
+</body>
+</html>
