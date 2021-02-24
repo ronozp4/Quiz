@@ -169,14 +169,14 @@
                             var btn = document.getElementById("nextBtn");
                             btn.textContent = 'Next Question';
                             isMultiple = false;
-                            theDificulty.textContent = 'Deficulty - Easy';
+                            theDificulty.textContent = 'Difficulty - Easy';
 
                         } else if (document.getElementById("radio2").checked) {
                             urls = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple";
                             var btn = document.getElementById("nextBtn");
 							document.getElementById("div2").style.visibility = "visible";
                             btn.textContent = 'Next Question';
-                            theDificulty.textContent = 'Deficulty - Easy';
+                            theDificulty.textContent = 'Difficulty - Easy';
                             isMultiple = true;
 
 
@@ -189,10 +189,10 @@
                     if (isMultiple) {
                         if (Qcnt == 5) {
                             urls = "https://opentdb.com/api.php?amount=1&difficulty=medium&type=multiple";
-                            theDificulty.textContent = 'Deficulty - Medium';
+                            theDificulty.textContent = 'Difficulty - Medium';
                         } if (Qcnt == 10) {
                             urls = "https://opentdb.com/api.php?amount=1&difficulty=hard&type=multiple";
-                            theDificulty.textContent = 'Deficulty - Hard';
+                            theDificulty.textContent = 'Difficulty - Hard';
                         } if (Qcnt == 15) {
                             finish();
                         }
@@ -212,10 +212,10 @@
                     else { //True/False Questions
                         if (Qcnt == 5) {
                             urls = "https://opentdb.com/api.php?amount=1&difficulty=medium&type=boolean";
-                            theDificulty.textContent = 'Deficulty - Medium';
+                            theDificulty.textContent = 'Difficulty - Medium';
                         } if (Qcnt == 10) {
                             urls = "https://opentdb.com/api.php?amount=1&difficulty=hard&type=boolean";
-                            theDificulty.textContent = 'Deficulty - Hard';
+                            theDificulty.textContent = 'Difficulty - Hard';
                         }
                         if (Qcnt == 15) {
                             finish();
