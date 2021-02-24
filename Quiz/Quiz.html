@@ -7,37 +7,37 @@
 </head>
 <style>
 	body {
-  background-image: url('brain_backround.jpg');
-  background-repeat: repeat;
-  background-attachment: fixed; 
-  background-size: 100% 110%;
-}
-.label {
-  color: black;
-  padding: 8px;
-}
+      background-image: url('backround.jpg');
+      background-repeat: repeat;
+      background-attachment: fixed; 
+      background-size: 100% 110%;
+  }
+  .label {
+      color: black;
+      padding: 8px;
+  }
 
-.success {background-color: #4CAF50;} /* Green */
-.info {background-color: #2196F3;} /* Blue */
-.warning {background-color: #ff9800;} /* Orange */
-.danger {background-color: #f44336;} /* Red */
-.other {background-color: #e7e7e7; color: black;} /* Gray */
+  .success {background-color: #4CAF50;} /* Green */
+  .info {background-color: #2196F3;} /* Blue */
+  .warning {background-color: #ff9800;} /* Orange */
+  .danger {background-color: #f44336;} /* Red */
+  .other {background-color: #e7e7e7; color: black;} /* Gray */
 
-	.myButton {
-	box-shadow: 0px 1px 0px 0px #f0f7fa;
-	background:linear-gradient(to bottom, #33bdef 5%, #019ad2 100%);
-	background-color:#33bdef;
-	border-radius:6px;
-	border:1px solid #057fd0;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:21px;
-	font-weight:bold;
-	padding:14px 48px;
-	text-decoration:none;
-	text-shadow:0px -1px 0px #5b6178;
+  .myButton {
+   box-shadow: 0px 1px 0px 0px #f0f7fa;
+   background:linear-gradient(to bottom, #33bdef 5%, #019ad2 100%);
+   background-color:#33bdef;
+   border-radius:6px;
+   border:1px solid #057fd0;
+   display:inline-block;
+   cursor:pointer;
+   color:#ffffff;
+   font-family:Arial;
+   font-size:21px;
+   font-weight:bold;
+   padding:14px 48px;
+   text-decoration:none;
+   text-shadow:0px -1px 0px #5b6178;
 }
 .myButton:hover {
 	background:linear-gradient(to bottom, #019ad2 5%, #33bdef 100%);
@@ -52,36 +52,37 @@
 </style>
 <body style="background-color:powderblue;">
 	<div align="center"style="margin-top:200px" >
-	
-    <label class="label other" style="font-size:35px" id="question">The Question.</label>
-    <div id="div1">
-    <p></p>
-    <label class="label other" style=" font-size:25px"><input type="radio" name="option" id="radio1" /> <span id="opt1"></span></label>
-    <p></p>
-    <label class="label other" style="font-size:25px"><input type="radio" name="option" id="radio2" /> <span id="opt2"></span></label>
-    <div id="div2">
-    <p></p>
-    <label  class="label other" style="font-size:25px"><input type="radio" name="option" id="radio3" /> <span id="opt3"></span></label>
-    <p></p>
-    <label  class="label other" style="font-size:25px"><input type="radio" name="option" id="radio4" /> <span id="opt4"></span></label>
-    <p></p>
-</div>
-</div>
-    <p  visibility='hidden' id="correctAns"></p>
-    <!-- <center> <Button id="nextBtn">Next Question</Button> </center> -->
-    <a href="#" id="nextBtn" class="myButton">Start</a>
-	<br/>
-	<br/>
+        <label class="label other" style="visibility: hidden; font-size:25px; background-color:#4ef753;" id="score">Score: 0</label> 
+        <p></p><br>
+        <label class="label other" style="font-size:35px" id="question">The Question.</label>
+        <div id="div1">
+            <p></p>
+            <label class="label other" style=" font-size:25px"><input type="radio" name="option" id="radio1" /> <span id="opt1"></span></label>
+            <p></p>
+            <label class="label other" style="font-size:25px"><input type="radio" name="option" id="radio2" /> <span id="opt2"></span></label>
+            <div id="div2">
+                <p></p>
+                <label  class="label other" style="font-size:25px"><input type="radio" name="option" id="radio3" /> <span id="opt3"></span></label>
+                <p></p>
+                <label  class="label other" style="font-size:25px"><input type="radio" name="option" id="radio4" /> <span id="opt4"></span></label>
+                <p></p>
+            </div>
+        </div>
+        <p  visibility='hidden' id="correctAns"></p>
+        <!-- <center> <Button id="nextBtn">Next Question</Button> </center> -->
+        <a href="#" id="nextBtn" class="myButton">Start</a>
+        <br/>
+        <br/>
 
-    <label class="label other" id="difficulty"></label>
-</div>	
+        <label style="visibility: hidden;" class="label other" id="difficulty"></label>
+    </div>	
     <script>
-        var counter = 0;
+        var scoreCounter = 0;
         var Qcnt = 0;
         var urls;
         var rand;
         var correctNum;
-        var isMultiple;
+        var isMultiple = false;
         var div1 = document.getElementById("div1");
         var option1 = document.getElementById("opt1");
         var option2 = document.getElementById("opt2");
@@ -94,6 +95,7 @@
         var title = document.getElementById("question");
         var btn = document.getElementById("nextBtn");
         var theDificulty = document.getElementById("difficulty");
+        var score = document.getElementById("score");
 
         function startLook() {
             document.getElementById("div2").style.visibility = "hidden";
@@ -110,9 +112,9 @@
 
             nextBtn.textContent = 'Menu';
             theDificulty.style.visibility = "hidden";
-            title.textContent = 'Your final score is ' + counter + '!';
+            score.style.visibility = "hidden";
 
-            exit();
+            title.textContent = 'Your final score is ' + scoreCounter + '/15 !';
         }
 
 
@@ -150,7 +152,6 @@
                         }
                     });
 
-
                 }
                 startLook();
 
@@ -165,7 +166,8 @@
                     if (Qcnt == 0) {
                         if (radio1.checked) {
                             urls = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=boolean";
-
+                            theDificulty.style.visibility = "visible";
+                            score.style.visibility = "visible";        
                             var btn = document.getElementById("nextBtn");
                             btn.textContent = 'Next Question';
                             isMultiple = false;
@@ -173,67 +175,45 @@
 
                         } else if (document.getElementById("radio2").checked) {
                             urls = "https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple";
+                            theDificulty.style.visibility = "visible";
+                            score.style.visibility = "visible";
                             var btn = document.getElementById("nextBtn");
-							document.getElementById("div2").style.visibility = "visible";
+                            document.getElementById("div2").style.visibility = "visible";
                             btn.textContent = 'Next Question';
                             theDificulty.textContent = 'Difficulty - Easy';
                             isMultiple = true;
-
-
                         } else {
                             alert("Game type was not been chosen. Try again.");
                             location.reload();
                         }
 
                     }
-                    if (isMultiple) {
-                        if (Qcnt == 5) {
-                            urls = "https://opentdb.com/api.php?amount=1&difficulty=medium&type=multiple";
-                            theDificulty.textContent = 'Difficulty - Medium';
-                        } if (Qcnt == 10) {
-                            urls = "https://opentdb.com/api.php?amount=1&difficulty=hard&type=multiple";
-                            theDificulty.textContent = 'Difficulty - Hard';
-                        } if (Qcnt == 15) {
-                            finish();
-                        }
 
-                        if (option1.textContent.toString() == correctAnswer.textContent.toString() && radio1.checked) {
-                            counter++;
-                        } else if (option2.textContent.toString() == correctAnswer.textContent.toString() && radio2.checked) {
-                            counter++;
-                        } else if (option3.textContent.toString() == correctAnswer.textContent.toString() && radio3.checked) {
-                            counter++;
-                        } else if (option4.textContent.toString() == correctAnswer.textContent.toString() && radio4.checked) {
-                            counter++;
-                        }
-
-                        getquestion();
+                    if (Qcnt == 5) {
+                        theDificulty.textContent = 'Difficulty - Medium';
+                    } if (Qcnt == 10) {
+                        theDificulty.textContent = 'Difficulty - Hard';
+                    } if (Qcnt == 15) {
+                        finish();
+                        return;
                     }
-                    else { //True/False Questions
-                        if (Qcnt == 5) {
-                            urls = "https://opentdb.com/api.php?amount=1&difficulty=medium&type=boolean";
-                            theDificulty.textContent = 'Difficulty - Medium';
-                        } if (Qcnt == 10) {
-                            urls = "https://opentdb.com/api.php?amount=1&difficulty=hard&type=boolean";
-                            theDificulty.textContent = 'Difficulty - Hard';
-                        }
-                        if (Qcnt == 15) {
-                            finish();
-                        }
-                        if (option1.textContent.toString() == correctAnswer.textContent.toString() && radio1.checked) {
-                            counter++;
-                        } else if (option2.textContent.toString() == correctAnswer.textContent.toString() && radio2.checked) {
-                            counter++;
-                        }
-                        getquestion();
 
+                    if (option1.textContent.toString() == correctAnswer.textContent.toString() && radio1.checked) {
+                        scoreCounter++;
+                    } else if (option2.textContent.toString() == correctAnswer.textContent.toString() && radio2.checked) {
+                        scoreCounter++;
+                    } else if (option3.textContent.toString() == correctAnswer.textContent.toString() && radio3.checked) {
+                        scoreCounter++;
+                    } else if (option4.textContent.toString() == correctAnswer.textContent.toString() && radio4.checked) {
+                        scoreCounter++;
                     }
+                    getquestion();
+                    score.textContent = "Score: "+scoreCounter;
                     Qcnt++;
-
                 };
                 $("#content").click(getquestion);
             });
-    </script>
+        </script>
 
-</body>
-</html>
+    </body>
+    </html>
