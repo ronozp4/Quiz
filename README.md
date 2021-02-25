@@ -2,4 +2,4 @@
 API based Quiz
 
 Run it from github with the link:
-https://ronozp4.github.io/Web_Mini_Projects/Quiz/Quiz.html
+https://ronozp4.github.io/Quiz/Quiz/Quiz.html
